@@ -13,7 +13,7 @@
 #endif
 
 extension JChar {
-  
+
     /// Returns a `String` from an array of `JChar`s.
     /// - Throws: `Error` when parsing the string fails.
     public func string() throws -> String {
@@ -22,12 +22,12 @@ extension JChar {
 }
 
 extension String {
-    
+
     func chars() -> [JChar] {
         let chars = Array<JChar>(self.utf8)
         return chars
     }
-    
+
     func char() -> JChar {
         let chars = self.chars()
         precondition(chars.count == 1)
@@ -36,7 +36,7 @@ extension String {
 }
 
 extension Collection where Iterator.Element == UInt8 {
-  
+
     /// Returns a `String` from a collection with element `UInt8`.
     /// - Throws: `Error` when parsing the string fails.
     public func string() throws -> String {
@@ -50,7 +50,7 @@ extension Collection where Iterator.Element == UInt8 {
             case .error: //error, can't describe what however
                 throw JayError.parseStringFromCharsFailed(Array(self))
             case .scalarValue(let unicodeScalar):
-                str.append(unicodeScalar)
+                str.append(String(unicodeScalar))
             }
         }
     }
@@ -61,11 +61,11 @@ extension Collection where Iterator.Element == UInt8 {
     /// Otherwise first array contains the original
     /// collection and the second is nil.
     func splitAround(delimiter: [JChar]) -> ([JChar], [JChar]?) {
-        
+
         let orig = Array(self)
         let end = orig.endIndex
         let delimCount = delimiter.count
-        
+
         var index = orig.startIndex
         while index+delimCount <= end {
             let cur = Array(orig[index..<index+delimCount])
@@ -82,4 +82,3 @@ extension Collection where Iterator.Element == UInt8 {
         return (orig, nil)
     }
 }
-

@@ -10,7 +10,11 @@ public protocol JsonOutputStream {
     func print(_ bytes: [UInt8])
 }
 
-infix operator <<< { associativity left }
+precedencegroup Streamable {
+  associativity: left
+}
+
+infix operator <<< : Streamable
 
 @discardableResult
 func <<<(stream: JsonOutputStream, value: UInt8) -> JsonOutputStream {
@@ -25,7 +29,7 @@ func <<<(stream: JsonOutputStream, value: [UInt8]) -> JsonOutputStream {
 }
 
 public class ConsoleOutputStream: JsonOutputStream {
-    
+
     public init() { }
 
     /// Writes the textual representation of the provided bytes into the standard output.
@@ -36,13 +40,13 @@ public class ConsoleOutputStream: JsonOutputStream {
 }
 
 public class ByteArrayOutputStream: JsonOutputStream {
-    
+
     public var bytes: [UInt8]
-    
+
     public init() {
         self.bytes = []
     }
-    
+
     public func print(_ bytes: [UInt8]) {
         self.bytes += bytes
     }
